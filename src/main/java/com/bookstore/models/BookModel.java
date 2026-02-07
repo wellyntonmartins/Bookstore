@@ -19,15 +19,15 @@ public class BookModel implements Serializable {
     @Column(nullable = false, unique = true)
     private String title;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToOne(fetch = FetchType.LAZY) // Fala pro JPA que essa coluna e uma "ManyToOne" (Basicamente, diz que essa entidade, nessa coluna, pode
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToOne//(fetch = FetchType.LAZY) // Fala pro JPA que essa coluna e uma "ManyToOne" (Basicamente, diz que essa entidade, nessa coluna, pode
     // ter apenas UM publisher)
     @JoinColumn(name = "publisher_id") // Cria uma nova coluna (com o nome "publisher_id") com base na chave primaria da
     // entidade referenciada
     private PublisherModel publisher;
 
-    @JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
-    @ManyToMany(fetch = FetchType.LAZY)
+    //@JsonProperty(access = JsonProperty.Access.WRITE_ONLY)
+    @ManyToMany//(fetch = FetchType.LAZY)
     @JoinTable( // Por conta de ser um relacionamento de ManyToMany, e preciso criar uma tabela de associacao para
             // suportar esses dados, cujas DUAS COLUNAS SAO FOREIGN KEY UMAS DAS OUTRAS
             joinColumns = @JoinColumn(name = "book_id"),// Primeira coluna, com o primary key da entidade atual (tb_book)

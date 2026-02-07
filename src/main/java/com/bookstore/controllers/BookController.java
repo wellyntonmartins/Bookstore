@@ -19,21 +19,31 @@ public class BookController {
         this.bookService = bookService;
     }
 
+    @GetMapping
+    public ResponseEntity<List<BookModel>> getBooks() {
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.getAllBooks());
+    }
+
+    @GetMapping("/id/{id}")
+    public ResponseEntity<BookModel> getBookById(@PathVariable UUID id) {
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.getBookById(id));
+    }
+
+    @GetMapping("/title/{title}")
+    public ResponseEntity<List<BookModel>> getBookByTitle(@PathVariable String title) {
+        return ResponseEntity.status(HttpStatus.OK).body(bookService.getAllBooksByContainingTitle(title));
+    }
+
     @PostMapping
     public ResponseEntity<BookModel> saveBook(@RequestBody BookRecordDto bookRecordDto) {
         BookModel response = bookService.saveBook(bookRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-    @GetMapping
-    public ResponseEntity<List<BookModel>> getBooks() {
-        return ResponseEntity.status(HttpStatus.CREATED).body(bookService.getAllBooks());
-    }
-
-    @DeleteMapping("/{id}")
+    @DeleteMapping("/id/{id}")
     public ResponseEntity<String> deleteBooks(@PathVariable UUID id) {
         bookService.deleteBook(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Book deleted successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body("Book with id '" + id + "' deleted successfully.");
     }
 }
 

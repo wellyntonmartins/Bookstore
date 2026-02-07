@@ -3,11 +3,12 @@ package com.bookstore.models;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
+import java.io.Serializable;
 import java.util.UUID;
 
 @Entity
 @Table(name = "TB_REVIEW")
-public class ReviewModel {
+public class ReviewModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)

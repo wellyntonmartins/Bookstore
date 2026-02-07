@@ -3,7 +3,9 @@ package com.bookstore.controllers.exception;
 import com.bookstore.dtos.ErrorResponseDto;
 import com.bookstore.exceptions.DataFormatWrongException;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.persistence.QueryTimeoutException;
 import jakarta.servlet.http.HttpServletRequest;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
@@ -20,7 +22,7 @@ public class GlobalExceptionHandler {
         ErrorResponseDto error = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Regra de Negócio Violada",
+                "Business Rule Violated",
                 ex.getMessage(),
                 request.getRequestURI()
         );
@@ -32,7 +34,7 @@ public class GlobalExceptionHandler {
         ErrorResponseDto error = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Dados enviados incorretamente",
+                "Data Sent Incorrectly",
                 ex.getMessage(),
                 request.getRequestURI()
         );
@@ -44,11 +46,34 @@ public class GlobalExceptionHandler {
         ErrorResponseDto error = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.NOT_FOUND.value(),
-                "Dados não encontrados",
+                "Data Not Found",
                 ex.getMessage(),
                 request.getRequestURI()
         );
         return ResponseEntity.status(HttpStatus.NOT_FOUND).body(error);
     }
 
+    @ExceptionHandler(DataIntegrityViolationException.class)
+    public ResponseEntity<ErrorResponseDto> handleDataAccessException(DataIntegrityViolationException ex, HttpServletRequest request) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "There Was a Conflict",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
+    }
+
+    @ExceptionHandler(QueryTimeoutException.class)
+    public ResponseEntity<ErrorResponseDto> handleDataAccessException(QueryTimeoutException ex, HttpServletRequest request) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                LocalDateTime.now(),
+                HttpStatus.GATEWAY_TIMEOUT.value(),
+                "The Server Took Too Long to Respond",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.GATEWAY_TIMEOUT).body(error);
+    }
 }

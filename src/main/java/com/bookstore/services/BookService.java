@@ -11,13 +11,12 @@ import com.bookstore.repsitories.BookRepository;
 import com.bookstore.repsitories.PublisherRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
-import java.util.HashSet;
-import java.util.List;
-import java.util.Objects;
-import java.util.UUID;
+import java.io.Serializable;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -37,39 +36,72 @@ public class BookService {
         return bookRepository.findAll();
     }
 
+    public BookModel getBookById(UUID id) {
+        if (id == null) {
+            throw new DataFormatWrongException("The provided UUID can't be empty or null.");
+        }
+
+        return bookRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Book with UUID: '" + id + "' not found"));
+    }
+
+    public List<BookModel> getAllBooksByContainingTitle(String title) {
+        if (!StringUtils.hasText(title)) {
+            throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
+        }
+
+        List<BookModel> books = bookRepository.findBookModelsByTitleContainingIgnoreCase(title);
+
+        if (books.isEmpty()) {
+            throw new EntityNotFoundException("Books not found. Please check the provided title");
+        }
+
+        return books;
+    }
 
 
     // -------------- SAVE/EDIT/EXCLUDE METHODS --------------
-    @Transactional // Faz com que caso aconteca algum erro ao salvar/exception, ela da um RollBack nas transações
+    @Transactional
     public BookModel saveBook(BookRecordDto bookRecordDto) {
+        // Validation for empty or null data
         if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty()) {
-            throw new DataFormatWrongException("Dados não podem ser vazios. Por favor, verifique o conteúdo da requisição");
+            throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
 
         if (bookRecordDto.title().matches("\\d+")) {
-            System.out.println("bookRecordDto: " + bookRecordDto.toString());
-            throw new DataFormatWrongException("O título não pode ser composto apenas por números.");
+            throw new DataFormatWrongException("The title cannot consist solely of numbers.");
         }
 
         if (Objects.isNull(bookRecordDto.publisherId())) {
-            throw new DataFormatWrongException("Para adicionar um livro, e necessário informar a editora.");
+            throw new DataFormatWrongException("To add a book, you need to inform the publisher.");
+        }
+
+        // Validation for data not found or conflict on entities.
+        Optional<BookModel> bookToCompare = bookRepository.findBookModelByTitle(bookRecordDto.title());
+
+        if (bookToCompare.isPresent()) { // Check if book with this title exists
+            throw new DataIntegrityViolationException("Already exists a book with this title. Please change the title of new book");
         }
 
         PublisherModel publisher = publisherRepository.findById(bookRecordDto.publisherId()).orElseThrow(() ->
-                new EntityNotFoundException("Editora nao encontrada. Por favor, verifique o UUID dela fornecido"));
+                new EntityNotFoundException("Publisher not found. Please check the provided UUID."));
         List<AuthorModel> authors = authorRepository.findAllById(bookRecordDto.authorsIds());
 
-
-        if (authors.size() != bookRecordDto.authorsIds().size()) {
-            throw new EntityNotFoundException("Um ou mais autores não foram encontrados. Por favor, verifique os UUID's deles enviados.");
+        if (authors.isEmpty()) {
+            throw new EntityNotFoundException("Any author was founded with provided UUID's. Please check they provided UUID's.");
         }
 
+        if (authors.size() != bookRecordDto.authorsIds().size()) {
+            throw new EntityNotFoundException("One or more authors was not found. Please check they provided UUID's.");
+        }
+
+        // Instantiation
         BookModel newBook = new BookModel();
         newBook.setTitle(bookRecordDto.title());
         newBook.setPublisher(publisher);
         newBook.setAuthors(new HashSet<>(authors));
 
-        if(StringUtils.hasText(bookRecordDto.reviewComment())) {
+        if (StringUtils.hasText(bookRecordDto.reviewComment())) {
             ReviewModel reviewModel = new ReviewModel();
             reviewModel.setComment(bookRecordDto.reviewComment());
             reviewModel.setBook(newBook);
@@ -81,6 +113,7 @@ public class BookService {
 
     @Transactional
     public void deleteBook(UUID id) {
-        bookRepository.deleteById(id);
+        getBookById(id); // To check if this book exists
+        bookRepository.deleteById(id); // If an error occurs, will be caught by DataIntegrityViolationException
     }
 }
