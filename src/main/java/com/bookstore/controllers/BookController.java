@@ -38,6 +38,16 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+//    @PutMapping("/{id}")
+//    public ResponseEntity<BookModel> updatePutBook(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
+//
+//    }
+//
+//    @PatchMapping("/{id}")
+//    public ResponseEntity<BookModel> updatePatchBook(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
+//
+//    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBooks(@PathVariable UUID id) {
         bookService.deleteBook(id);

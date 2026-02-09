@@ -1,8 +1,8 @@
 package com.bookstore.controllers;
 
+import com.bookstore.dtos.AuthorRecordDto;
 import com.bookstore.models.AuthorModel;
 import com.bookstore.services.AuthorService;
-import org.apache.coyote.Response;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -30,5 +30,17 @@ public class AuthorController {
     @GetMapping("/{id}")
     public ResponseEntity<AuthorModel> getAuthorById(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(authorService.getAuthorById(id));
+    }
+
+    @PostMapping
+    public ResponseEntity<AuthorModel> save(@RequestBody AuthorRecordDto authorRecordDto) {
+        AuthorModel response = authorService.saveAuthor(authorRecordDto);
+        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @DeleteMapping("/{id}")
+    public ResponseEntity<String> delete(@PathVariable UUID id) {
+        authorService.deleteAuthor(id);
+        return ResponseEntity.status(HttpStatus.OK).body("Author with id '" + id + "' deleted successfully.");
     }
 }

@@ -34,7 +34,7 @@ public class GlobalExceptionHandler {
         ErrorResponseDto error = new ErrorResponseDto(
                 LocalDateTime.now(),
                 HttpStatus.BAD_REQUEST.value(),
-                "Data Sent Incorrectly",
+                "Data Sent Incorrectly. Please, send a valid JSON",
                 ex.getMessage(),
                 request.getRequestURI()
         );

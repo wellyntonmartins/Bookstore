@@ -111,6 +111,8 @@ public class BookService {
         return bookRepository.save(newBook);
     }
 
+
+
     @Transactional
     public void deleteBook(UUID id) {
         getBookById(id); // To check if this book exists

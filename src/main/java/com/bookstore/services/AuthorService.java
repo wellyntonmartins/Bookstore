@@ -1,14 +1,17 @@
 package com.bookstore.services;
 
+import com.bookstore.dtos.AuthorRecordDto;
 import com.bookstore.exceptions.DataFormatWrongException;
 import com.bookstore.models.AuthorModel;
-import com.bookstore.models.BookModel;
 import com.bookstore.repsitories.AuthorRepository;
 import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 @Service
@@ -48,4 +51,31 @@ public class AuthorService {
     }
 
     // -------------- SAVE/EDIT/EXCLUDE METHODS --------------
+    @Transactional
+    public AuthorModel saveAuthor(AuthorRecordDto authorRecordDto) {
+        if (!StringUtils.hasText(authorRecordDto.name())) {
+            throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
+        }
+
+        if (authorRecordDto.name().matches("\\d+")) {
+            throw new DataFormatWrongException("The name cannot consist solely of numbers.");
+        }
+
+        Optional<AuthorModel> authorToCompare = authorRepository.findAuthorModelByName(authorRecordDto.name());
+
+        if (authorToCompare.isPresent()) {
+            throw new DataIntegrityViolationException("Already exists a author with this name. Please change the name of new author");
+        }
+
+        AuthorModel newAuthor = new AuthorModel();
+        newAuthor.setName(authorRecordDto.name());
+
+        return authorRepository.save(newAuthor);
+    }
+
+    @Transactional
+    public void deleteAuthor(UUID id) {
+        getAuthorById(id);
+        authorRepository.deleteById(id);
+    }
 }
