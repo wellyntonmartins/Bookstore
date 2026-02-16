@@ -33,16 +33,17 @@ public class BookController {
     }
 
     @PostMapping
-    public ResponseEntity<BookModel> saveBook(@RequestBody BookRecordDto bookRecordDto) {
+    public ResponseEntity<BookModel> save(@RequestBody BookRecordDto bookRecordDto) {
         BookModel response = bookService.saveBook(bookRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-//    @PutMapping("/{id}")
-//    public ResponseEntity<BookModel> updatePutBook(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
-//
-//    }
-//
+    @PutMapping("/{id}")
+    public ResponseEntity<BookModel> update(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
+        BookModel response = bookService.updateBook(id, bookRecordDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
 //    @PatchMapping("/{id}")
 //    public ResponseEntity<BookModel> updatePatchBook(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
 //
@@ -51,7 +52,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBooks(@PathVariable UUID id) {
         bookService.deleteBook(id);
-        return ResponseEntity.status(HttpStatus.OK).body("Book with id '" + id + "' deleted successfully.");
+        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Book with id '" + id + "' deleted successfully.");
     }
 }
 

@@ -1,6 +1,5 @@
 package com.bookstore.models;
 
-import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -38,7 +37,6 @@ public class BookModel implements Serializable {
 
     @OneToOne(mappedBy = "book", cascade = CascadeType.ALL)
     private ReviewModel review;
-
 
     public UUID getId() {
         return id;

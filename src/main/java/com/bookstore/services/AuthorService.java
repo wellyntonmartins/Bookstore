@@ -73,6 +73,27 @@ public class AuthorService {
         return authorRepository.save(newAuthor);
     }
 
+    public AuthorModel updateAuthor(UUID authorId, AuthorRecordDto authorRecordDto) {
+        if (!StringUtils.hasText(authorRecordDto.name())) {
+            throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
+        }
+
+        if (authorRecordDto.name().matches("\\d+")) {
+            throw new DataFormatWrongException("The name cannot consist solely of numbers.");
+        }
+
+        AuthorModel authorToUpdate = getAuthorById(authorId);
+        Optional<AuthorModel> authorToCompare = authorRepository.findAuthorModelByName(authorRecordDto.name());
+
+        if (authorToCompare.isPresent() && !authorToCompare.get().getId().equals(authorToUpdate.getId())) {
+            throw new DataIntegrityViolationException("Already exists a author with this name. Please change the name to update this author");
+        }
+
+        authorToUpdate.setName(authorRecordDto.name());
+
+        return authorRepository.save(authorToUpdate);
+    }
+
     @Transactional
     public void deleteAuthor(UUID id) {
         getAuthorById(id);

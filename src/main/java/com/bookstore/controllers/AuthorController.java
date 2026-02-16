@@ -38,6 +38,12 @@ public class AuthorController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
+    @PutMapping("/{id}")
+    public ResponseEntity<AuthorModel> update(@PathVariable UUID id, @RequestBody AuthorRecordDto authorRecordDto) {
+        AuthorModel response = authorService.updateAuthor(id, authorRecordDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
+
     @DeleteMapping("/{id}")
     public ResponseEntity<String> delete(@PathVariable UUID id) {
         authorService.deleteAuthor(id);
