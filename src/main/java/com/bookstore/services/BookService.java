@@ -40,7 +40,7 @@ public class BookService {
         }
 
         return bookRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Book with UUID: '" + id + "' not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Book with UUID: '" + id + "' not found."));
     }
 
     public List<BookModel> getAllBooksByContainingTitle(String title) {
@@ -51,14 +51,14 @@ public class BookService {
         List<BookModel> books = bookRepository.findBookModelsByTitleContainingIgnoreCase(title);
 
         if (books.isEmpty()) {
-            throw new EntityNotFoundException("Books not found. Please check the provided title");
+            throw new EntityNotFoundException("Books not found. Please check the provided title.");
         }
 
         return books;
     }
 
 
-    // -------------- SAVE/EDIT/EXCLUDE METHODS --------------
+    // -------------- SAVE/UPDATE/EXCLUDE METHODS --------------
     @Transactional
     public BookModel saveBook(BookRecordDto bookRecordDto) {
         // Validation for empty or null data
@@ -78,7 +78,7 @@ public class BookService {
         Optional<BookModel> bookToCompare = bookRepository.findBookModelByTitle(bookRecordDto.title());
 
         if (bookToCompare.isPresent()) { // Check if book with this title exists
-            throw new DataIntegrityViolationException("Already exists a book with this title. Please change the title of new book");
+            throw new DataIntegrityViolationException("Already exists an book with this title. Please change the title of new book.");
         }
 
         PublisherModel publisher = publisherRepository.findById(bookRecordDto.publisherId()).orElseThrow(() ->
@@ -113,7 +113,7 @@ public class BookService {
     public BookModel updateBook(UUID bookId, BookRecordDto bookRecordDto) {
         // Validation for empty or null data
         if (Objects.isNull(bookId)) {
-            throw new DataFormatWrongException("To update an book, you need to inform the book UUID. Please, check the provided book UUID");
+            throw new DataFormatWrongException("To update an book, you need to inform the book UUID. Please, check the provided book UUID.");
         }
 
         if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty()) {
@@ -129,12 +129,12 @@ public class BookService {
         }
 
         // Validation for data not found or conflict on entities.
-        BookModel bookToUpdate = getBookById(bookId); // If it pass, is because the provided bookId is of a existing book
+        BookModel bookToUpdate = getBookById(bookId); // If it pass, is because the provided bookId is of an existing book
 
         Optional<BookModel> bookToCompare = bookRepository.findBookModelByTitle(bookRecordDto.title());
 
         if (bookToCompare.isPresent() && !bookToCompare.get().getId().equals(bookToUpdate.getId())) {
-            throw new DataIntegrityViolationException("Already exists a book with this title. Please change the title for update this book");
+            throw new DataIntegrityViolationException("Already exists an book with this title. Please change the title for update this book.");
         }
 
         PublisherModel publisher = publisherRepository.findById(bookRecordDto.publisherId()).orElseThrow(() ->

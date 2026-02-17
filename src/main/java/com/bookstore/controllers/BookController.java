@@ -52,7 +52,7 @@ public class BookController {
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBooks(@PathVariable UUID id) {
         bookService.deleteBook(id);
-        return ResponseEntity.status(HttpStatus.NO_CONTENT).body("Book with id '" + id + "' deleted successfully.");
+        return ResponseEntity.status(HttpStatus.OK).body("Book with id '" + id + "' deleted successfully.");
     }
 }
 

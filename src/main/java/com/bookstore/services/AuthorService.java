@@ -35,7 +35,7 @@ public class AuthorService {
         List<AuthorModel> authors = authorRepository.findAuthorModelsByNameContainingIgnoreCase(name);
 
         if (authors.isEmpty()) {
-            throw new EntityNotFoundException("Books not found. Please check the provided title");
+            throw new EntityNotFoundException("Books not found. Please check the provided title.");
         }
 
         return authors;
@@ -47,10 +47,10 @@ public class AuthorService {
         }
 
         return authorRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Author with UUID: '" + id + "' not found"));
+                .orElseThrow(() -> new EntityNotFoundException("Author with UUID: '" + id + "' not found."));
     }
 
-    // -------------- SAVE/EDIT/EXCLUDE METHODS --------------
+    // -------------- SAVE/UPDATE/EXCLUDE METHODS --------------
     @Transactional
     public AuthorModel saveAuthor(AuthorRecordDto authorRecordDto) {
         if (!StringUtils.hasText(authorRecordDto.name())) {
@@ -64,7 +64,7 @@ public class AuthorService {
         Optional<AuthorModel> authorToCompare = authorRepository.findAuthorModelByName(authorRecordDto.name());
 
         if (authorToCompare.isPresent()) {
-            throw new DataIntegrityViolationException("Already exists a author with this name. Please change the name of new author");
+            throw new DataIntegrityViolationException("Already exists an author with this name. Please change the name of new author.");
         }
 
         AuthorModel newAuthor = new AuthorModel();
@@ -73,6 +73,7 @@ public class AuthorService {
         return authorRepository.save(newAuthor);
     }
 
+    @Transactional
     public AuthorModel updateAuthor(UUID authorId, AuthorRecordDto authorRecordDto) {
         if (!StringUtils.hasText(authorRecordDto.name())) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
@@ -86,7 +87,7 @@ public class AuthorService {
         Optional<AuthorModel> authorToCompare = authorRepository.findAuthorModelByName(authorRecordDto.name());
 
         if (authorToCompare.isPresent() && !authorToCompare.get().getId().equals(authorToUpdate.getId())) {
-            throw new DataIntegrityViolationException("Already exists a author with this name. Please change the name to update this author");
+            throw new DataIntegrityViolationException("Already exists an author with this name. Please change the name to update this author.");
         }
 
         authorToUpdate.setName(authorRecordDto.name());
