@@ -44,11 +44,6 @@ public class BookController {
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
 
-//    @PatchMapping("/{id}")
-//    public ResponseEntity<BookModel> updatePatchBook(@PathVariable UUID id, @RequestBody BookRecordDto bookRecordDto) {
-//
-//    }
-
     @DeleteMapping("/{id}")
     public ResponseEntity<String> deleteBooks(@PathVariable UUID id) {
         bookService.deleteBook(id);

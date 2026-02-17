@@ -4,7 +4,6 @@ import com.bookstore.dtos.PublisherRecordDto;
 import com.bookstore.models.PublisherModel;
 import com.bookstore.services.PublisherService;
 import org.springframework.http.HttpStatus;
-import org.springframework.http.HttpStatusCode;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 

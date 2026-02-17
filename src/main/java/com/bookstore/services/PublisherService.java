@@ -2,6 +2,7 @@ package com.bookstore.services;
 
 import com.bookstore.dtos.PublisherRecordDto;
 import com.bookstore.exceptions.DataFormatWrongException;
+import com.bookstore.models.BookModel;
 import com.bookstore.models.PublisherModel;
 import com.bookstore.repsitories.PublisherRepository;
 import jakarta.persistence.EntityNotFoundException;
@@ -46,10 +47,10 @@ public class PublisherService {
         }
 
         return publisherRepository.findById(id)
-                .orElseThrow(() -> new EntityNotFoundException("Author with UUID: '" + id + "' not found."));
+                .orElseThrow(() -> new EntityNotFoundException("Publisher with UUID: '" + id + "' not found."));
     }
 
-    // -------------- SAVE/UPDATE/EXCLUDE METHODS --------------
+    // -------------- SAVE/UPDATE METHODS --------------
     @Transactional
     public PublisherModel savePublisher(PublisherRecordDto publisherRecordDto) {
         if (!StringUtils.hasText(publisherRecordDto.name())) {
@@ -92,10 +93,4 @@ public class PublisherService {
         publisherToUpdate.setName(publisherRecordDto.name());
         return publisherRepository.save(publisherToUpdate);
     }
-
-//    @Transactional
-//    public void deletePublisher(UUID id) {
-//        getPublisherById(id);
-//        publisherRepository.deleteById(id);
-//    }
 }

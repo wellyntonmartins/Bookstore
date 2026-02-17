@@ -86,7 +86,7 @@ public class BookService {
         List<AuthorModel> authors = authorRepository.findAllById(bookRecordDto.authorsIds());
 
         if (authors.isEmpty()) {
-            throw new EntityNotFoundException("Any author was founded with provided UUID's. Please check they provided UUID's.");
+            throw new EntityNotFoundException("Any author was found with provided UUID's. Please check they provided UUID's.");
         }
 
         if (authors.size() != bookRecordDto.authorsIds().size()) {
@@ -143,7 +143,7 @@ public class BookService {
         List<AuthorModel> authors = authorRepository.findAllById(bookRecordDto.authorsIds());
 
         if (authors.isEmpty()) {
-            throw new EntityNotFoundException("Any author was founded with provided UUID's. Please check they provided UUID's.");
+            throw new EntityNotFoundException("Any author was found with provided UUID's. Please check they provided UUID's.");
         }
 
         if (authors.size() != bookRecordDto.authorsIds().size()) {
