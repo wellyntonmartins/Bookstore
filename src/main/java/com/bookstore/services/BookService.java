@@ -93,11 +93,16 @@ public class BookService {
             throw new EntityNotFoundException("One or more authors was not found. Please check they provided UUID's.");
         }
 
+        if (Objects.isNull(bookRecordDto.available_quantity()) ||bookRecordDto.available_quantity() < 0 || bookRecordDto.available_quantity() == 0) {
+            throw new DataFormatWrongException("To add a book, you need to inform the available quantity on library.");
+        }
+
         // Instantiation
         BookModel newBook = new BookModel();
         newBook.setTitle(bookRecordDto.title());
         newBook.setPublisher(publisher);
         newBook.setAuthors(new HashSet<>(authors));
+        newBook.setAvailable_quantity(bookRecordDto.available_quantity());
 
         if (StringUtils.hasText(bookRecordDto.reviewComment())) {
             ReviewModel reviewModel = new ReviewModel();
@@ -150,9 +155,14 @@ public class BookService {
             throw new EntityNotFoundException("One or more authors was not found. Please check they provided UUID's.");
         }
 
+        if (Objects.isNull(bookRecordDto.available_quantity()) ||bookRecordDto.available_quantity() < 0 || bookRecordDto.available_quantity() == 0) {
+            throw new DataFormatWrongException("To update an book, you need to inform the available quantity on library.");
+        }
+
         bookToUpdate.setTitle(bookRecordDto.title());
         bookToUpdate.setPublisher(publisher);
         bookToUpdate.setAuthors(new HashSet<>(authors));
+        bookToUpdate.setAvailable_quantity(bookRecordDto.available_quantity());
 
         if (StringUtils.hasText(bookRecordDto.reviewComment())) {
             ReviewModel bookAtualReview = bookToUpdate.getReview();
