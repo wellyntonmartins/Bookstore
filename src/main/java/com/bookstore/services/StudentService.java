@@ -1,0 +1,63 @@
+package com.bookstore.services;
+
+import com.bookstore.dtos.StudentRecordDto;
+import com.bookstore.enums.LoanStatus;
+import com.bookstore.enums.Shift;
+import com.bookstore.exceptions.DataFormatWrongException;
+import com.bookstore.models.StudentModel;
+import com.bookstore.repsitories.StudentRepository;
+import jakarta.persistence.EntityNotFoundException;
+import jakarta.transaction.Transactional;
+import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Objects;
+import java.util.UUID;
+
+@Service
+public class StudentService {
+    private StudentRepository studentRepository;
+
+    public StudentService(StudentRepository studentRepository) {
+        this.studentRepository = studentRepository;
+    }
+
+    public List<StudentModel> getAllStudents() {
+        return studentRepository.findAll();
+    }
+
+    public StudentModel getStudentById(UUID id) {
+        if (id == null) {
+            throw new DataFormatWrongException("The provided UUID can't be empty or null.");
+        }
+
+        return studentRepository.findById(id)
+                .orElseThrow(() -> new EntityNotFoundException("Student with UUID: '" + id + "' not found."));
+    }
+
+    @Transactional
+    public StudentModel saveStudent(StudentRecordDto studentRecordDto) {
+        if (!StringUtils.hasText(studentRecordDto.name()) || Objects.isNull(studentRecordDto.matriculation())
+                || Objects.isNull(studentRecordDto.shift()) || !StringUtils.hasText(studentRecordDto.school_class())) {
+            throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
+        }
+
+        if (studentRecordDto.name().matches("\\d+") || studentRecordDto.school_class().matches("\\d+")) {
+            throw new DataFormatWrongException("The name and/or school_class cannot consist solely of numbers.");
+        }
+
+        if (studentRecordDto.matriculation() <= 0 ) {
+            throw new DataFormatWrongException("The number of matriculation cannot be below or equals 0.");
+        }
+
+        StudentModel newStudent = new StudentModel();
+        newStudent.setName(studentRecordDto.name());
+        newStudent.setMatriculation(studentRecordDto.matriculation());
+        newStudent.setShift(studentRecordDto.shift());
+        newStudent.setSchool_class(studentRecordDto.school_class());
+
+        return studentRepository.save(newStudent);
+    }
+}

@@ -65,6 +65,19 @@ public class GlobalExceptionHandler {
         return ResponseEntity.status(HttpStatus.CONFLICT).body(error);
     }
 
+    @ExceptionHandler(InternalError.class)
+    public ResponseEntity<ErrorResponseDto> InternalErrorException(InternalError ex, HttpServletRequest request) {
+        ErrorResponseDto error = new ErrorResponseDto(
+                LocalDateTime.now(),
+                HttpStatus.CONFLICT.value(),
+                "An internal error occurred",
+                ex.getMessage(),
+                request.getRequestURI()
+        );
+        return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body(error);
+    }
+
+
     @ExceptionHandler(QueryTimeoutException.class)
     public ResponseEntity<ErrorResponseDto> handleDataAccessException(QueryTimeoutException ex, HttpServletRequest request) {
         ErrorResponseDto error = new ErrorResponseDto(
