@@ -1,5 +1,6 @@
 package com.bookstore.models;
 
+import com.bookstore.enums.UserAccessType;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
@@ -19,5 +20,5 @@ public class UserModel implements Serializable {
     private String password;
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
-    private AccessType access_type;
+    private UserAccessType access_type;
 }

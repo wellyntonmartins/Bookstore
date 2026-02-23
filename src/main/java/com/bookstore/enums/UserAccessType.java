@@ -1,6 +1,6 @@
 package com.bookstore.enums;
 
-public enum AccessType {
+public enum UserAccessType {
 
     ADMIN,
     LIBRARIAN,
