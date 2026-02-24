@@ -3,9 +3,8 @@ package com.bookstore.services;
 import com.bookstore.dtos.ReviewRecordDto;
 import com.bookstore.exceptions.DataFormatWrongException;
 import com.bookstore.models.BookModel;
-import com.bookstore.models.PublisherModel;
 import com.bookstore.models.ReviewModel;
-import com.bookstore.repsitories.ReviewRepository;
+import com.bookstore.repositories.ReviewRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -14,7 +13,6 @@ import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.UUID;
 
 @Service

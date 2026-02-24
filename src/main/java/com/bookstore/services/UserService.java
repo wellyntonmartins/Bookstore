@@ -1,6 +1,6 @@
 package com.bookstore.services;
 
-import com.bookstore.repsitories.UserRepository;
+import com.bookstore.repositories.UserRepository;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 public class UserService {

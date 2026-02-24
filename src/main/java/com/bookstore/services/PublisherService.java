@@ -2,9 +2,8 @@ package com.bookstore.services;
 
 import com.bookstore.dtos.PublisherRecordDto;
 import com.bookstore.exceptions.DataFormatWrongException;
-import com.bookstore.models.BookModel;
 import com.bookstore.models.PublisherModel;
-import com.bookstore.repsitories.PublisherRepository;
+import com.bookstore.repositories.PublisherRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;

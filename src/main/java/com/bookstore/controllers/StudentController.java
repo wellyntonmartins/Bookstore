@@ -1,8 +1,6 @@
 package com.bookstore.controllers;
 
-import com.bookstore.dtos.ReviewRecordDto;
 import com.bookstore.dtos.StudentRecordDto;
-import com.bookstore.models.ReviewModel;
 import com.bookstore.models.StudentModel;
 import com.bookstore.services.StudentService;
 import org.springframework.http.HttpStatus;
@@ -37,5 +35,9 @@ public class StudentController {
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
-
+    @PutMapping("/{id}")
+    public ResponseEntity<StudentModel> update(@PathVariable UUID id, @RequestBody StudentRecordDto studentRecordDto) {
+        StudentModel response = studentService.updateStudent(id, studentRecordDto);
+        return ResponseEntity.status(HttpStatus.OK).body(response);
+    }
 }

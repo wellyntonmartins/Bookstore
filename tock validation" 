@@ -330,7 +330,7 @@
 [1m--- /dev/null[m
 [1m+++ b/src/test/java/com/bookstore/repsitories/BookRepositoryTest.java[m
 [36m@@ -0,0 +1,12 @@[m
-[32m+[m[32mpackage com.bookstore.repsitories;[m
+[32m+[m[32mpackage com.bookstore.repositories;[m
 [32m+[m
 [32m+[m[32mimport org.junit.jupiter.api.Test;[m
 [32m+[m

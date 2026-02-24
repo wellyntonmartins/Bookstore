@@ -3,7 +3,7 @@ package com.bookstore.services;
 import com.bookstore.dtos.AuthorRecordDto;
 import com.bookstore.exceptions.DataFormatWrongException;
 import com.bookstore.models.AuthorModel;
-import com.bookstore.repsitories.AuthorRepository;
+import com.bookstore.repositories.AuthorRepository;
 import jakarta.persistence.EntityNotFoundException;
 import jakarta.transaction.Transactional;
 import org.springframework.dao.DataIntegrityViolationException;
