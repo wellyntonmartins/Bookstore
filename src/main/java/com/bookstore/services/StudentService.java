@@ -39,8 +39,7 @@ public class StudentService {
 
     @Transactional
     public StudentModel saveStudent(StudentRecordDto studentRecordDto) {
-        if (!StringUtils.hasText(studentRecordDto.name()) || Objects.isNull(studentRecordDto.matriculation())
-                || Objects.isNull(studentRecordDto.shift()) || !StringUtils.hasText(studentRecordDto.school_class())) {
+        if (!StringUtils.hasText(studentRecordDto.name()) || !StringUtils.hasText(studentRecordDto.school_class())) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
 
@@ -63,8 +62,7 @@ public class StudentService {
 
     @Transactional
     public StudentModel updateStudent(UUID id, StudentRecordDto studentRecordDto) {
-        if (Objects.isNull(id) || !StringUtils.hasText(studentRecordDto.name()) || Objects.isNull(studentRecordDto.matriculation())
-                || Objects.isNull(studentRecordDto.shift()) || !StringUtils.hasText(studentRecordDto.school_class())) {
+        if (!StringUtils.hasText(studentRecordDto.name()) || !StringUtils.hasText(studentRecordDto.school_class())) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
 

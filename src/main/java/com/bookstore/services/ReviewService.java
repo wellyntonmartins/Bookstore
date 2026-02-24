@@ -42,7 +42,7 @@ public class ReviewService {
     // -------------- SAVE/UPDATE METHODS --------------
     @Transactional
     public ReviewModel saveReview(UUID bookId, ReviewRecordDto reviewRecordDto) {
-        if (!StringUtils.hasText(reviewRecordDto.comment()) || Objects.isNull(bookId)) {
+        if (!StringUtils.hasText(reviewRecordDto.comment())) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
 

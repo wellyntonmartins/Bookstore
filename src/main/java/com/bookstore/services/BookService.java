@@ -70,10 +70,6 @@ public class BookService {
             throw new DataFormatWrongException("The title cannot consist solely of numbers.");
         }
 
-        if (Objects.isNull(bookRecordDto.publisherId())) {
-            throw new DataFormatWrongException("To add a book, you need to inform the publisher.");
-        }
-
         // Validation for data not found or conflict on entities.
         Optional<BookModel> bookToCompare = bookRepository.findBookModelByTitle(bookRecordDto.title());
 
@@ -93,7 +89,7 @@ public class BookService {
             throw new EntityNotFoundException("One or more authors was not found. Please check they provided UUID's.");
         }
 
-        if (Objects.isNull(bookRecordDto.available_quantity()) ||bookRecordDto.available_quantity() < 0 || bookRecordDto.available_quantity() == 0) {
+        if (bookRecordDto.available_quantity() < 0 || bookRecordDto.available_quantity() == 0) {
             throw new DataFormatWrongException("To add a book, you need to inform the available quantity on library.");
         }
 
@@ -116,11 +112,6 @@ public class BookService {
 
     @Transactional
     public BookModel updateBook(UUID bookId, BookRecordDto bookRecordDto) {
-        // Validation for empty or null data
-        if (Objects.isNull(bookId)) {
-            throw new DataFormatWrongException("To update an book, you need to inform the book UUID. Please, check the provided book UUID.");
-        }
-
         if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty()) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
@@ -129,13 +120,8 @@ public class BookService {
             throw new DataFormatWrongException("The title cannot consist solely of numbers.");
         }
 
-        if (Objects.isNull(bookRecordDto.publisherId())) {
-            throw new DataFormatWrongException("To update an book, you need to inform the publisher.");
-        }
-
         // Validation for data not found or conflict on entities.
         BookModel bookToUpdate = getBookById(bookId); // If it pass, is because the provided bookId is of an existing book
-
         Optional<BookModel> bookToCompare = bookRepository.findBookModelByTitle(bookRecordDto.title());
 
         if (bookToCompare.isPresent() && !bookToCompare.get().getId().equals(bookToUpdate.getId())) {
@@ -155,7 +141,7 @@ public class BookService {
             throw new EntityNotFoundException("One or more authors was not found. Please check they provided UUID's.");
         }
 
-        if (Objects.isNull(bookRecordDto.available_quantity()) ||bookRecordDto.available_quantity() < 0 || bookRecordDto.available_quantity() == 0) {
+        if (bookRecordDto.available_quantity() < 0 || bookRecordDto.available_quantity() == 0) {
             throw new DataFormatWrongException("To update an book, you need to inform the available quantity on library.");
         }
 

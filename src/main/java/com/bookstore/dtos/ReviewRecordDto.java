@@ -1,6 +1,8 @@
 package com.bookstore.dtos;
 
+import jakarta.validation.constraints.NotNull;
+
 public record ReviewRecordDto(
-    String comment
+        @NotNull(message = "Comment can't be null") String comment
 ) {
 }
