@@ -2,10 +2,16 @@ package com.bookstore.models;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "TB_REVIEW")
 public class ReviewModel implements Serializable {
@@ -21,24 +27,4 @@ public class ReviewModel implements Serializable {
     @OneToOne
     @JoinColumn(name = "book_id")
     private BookModel book;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getComment() {
-        return comment;
-    }
-
-    public void setComment(String comment) {
-        this.comment = comment;
-    }
-
-    public BookModel getBook() {
-        return book;
-    }
-
-    public void setBook(BookModel book) {
-        this.book = book;
-    }
 }

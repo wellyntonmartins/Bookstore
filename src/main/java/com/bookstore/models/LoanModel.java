@@ -2,12 +2,17 @@ package com.bookstore.models;
 
 import com.bookstore.enums.LoanStatus;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "TB_LOAN")
 public class LoanModel implements Serializable {
@@ -33,51 +38,4 @@ public class LoanModel implements Serializable {
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private LoanStatus status;
-
-    public LoanModel() {
-    }
-
-    public UUID getId() {
-        return id;
-    }
-
-    public BookModel getBook() {
-        return book;
-    }
-
-    public void setBook(BookModel book) {
-        this.book = book;
-    }
-
-    public StudentModel getStudent() {
-        return student;
-    }
-
-    public void setStudent(StudentModel student) {
-        this.student = student;
-    }
-
-    public LocalDate getDate() {
-        return date;
-    }
-
-    public void setDate(LocalDate date) {
-        this.date = date;
-    }
-
-    public LocalDate getDue_date() {
-        return due_date;
-    }
-
-    public void setDue_date(LocalDate due_date) {
-        this.due_date = due_date;
-    }
-
-    public LoanStatus getStatus() {
-        return status;
-    }
-
-    public void setStatus(LoanStatus status) {
-        this.status = status;
-    }
 }

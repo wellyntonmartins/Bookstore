@@ -3,8 +3,6 @@ package com.bookstore.dtos;
 import com.bookstore.enums.LoanStatus;
 import jakarta.validation.constraints.NotNull;
 
-import java.time.LocalDate;
-import java.util.Date;
 import java.util.UUID;
 
 public record LoanRecordDto(

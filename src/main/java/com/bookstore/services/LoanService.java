@@ -1,7 +1,6 @@
 package com.bookstore.services;
 
 import com.bookstore.dtos.LoanRecordDto;
-import com.bookstore.utils.Methods;
 import com.bookstore.enums.LoanStatus;
 import com.bookstore.exceptions.DataFormatWrongException;
 import com.bookstore.models.BookModel;

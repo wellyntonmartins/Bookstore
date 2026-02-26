@@ -1,6 +1,7 @@
 package com.bookstore.utils;
 
 import com.bookstore.exceptions.DataFormatWrongException;
+import org.springframework.util.StringUtils;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -12,7 +13,7 @@ public class Methods {
             DateTimeFormatter.ofPattern("yyyy-MM-dd");
     public static LocalDate parseDateToLocalDate(String date) {
 
-        if (date == null || date.isBlank()) {
+        if (!StringUtils.hasText(date)) {
             throw new DataFormatWrongException("date cannot be null or empty");
         }
 

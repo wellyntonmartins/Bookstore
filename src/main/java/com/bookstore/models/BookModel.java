@@ -1,12 +1,18 @@
 package com.bookstore.models;
 
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString
 @Entity
 @Table(name = "TB_BOOK")
 public class BookModel implements Serializable {
@@ -34,48 +40,4 @@ public class BookModel implements Serializable {
 
     @Column(nullable = false)
     private int available_quantity = 0;
-
-    public UUID getId() {
-        return id;
-    }
-
-    public String getTitle() {
-        return title;
-    }
-
-    public void setTitle(String title) {
-        this.title = title;
-    }
-
-    public PublisherModel getPublisher() {
-        return publisher;
-    }
-
-    public void setPublisher(PublisherModel publisher) {
-        this.publisher = publisher;
-    }
-
-    public Set<AuthorModel> getAuthors() {
-        return authors;
-    }
-
-    public ReviewModel getReview() {
-        return review;
-    }
-
-    public void setReview(ReviewModel review) {
-        this.review = review;
-    }
-
-    public void setAuthors(Set<AuthorModel> authors) {
-        this.authors = authors;
-    }
-
-    public int getAvailable_quantity() {
-        return available_quantity;
-    }
-
-    public void setAvailable_quantity(int available_quantity) {
-        this.available_quantity = available_quantity;
-    }
 }

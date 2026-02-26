@@ -2,10 +2,16 @@ package com.bookstore.models;
 
 import com.bookstore.enums.UserAccessType;
 import jakarta.persistence.*;
+import lombok.*;
 
 import java.io.Serializable;
 import java.util.UUID;
 
+@Getter
+@Setter
+@NoArgsConstructor
+@AllArgsConstructor
+@ToString(exclude = "password")
 @Entity
 @Table(name = "TB_USER")
 public class UserModel implements Serializable {
