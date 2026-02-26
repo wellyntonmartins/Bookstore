@@ -4,6 +4,7 @@ import com.bookstore.enums.LoanStatus;
 import jakarta.persistence.*;
 
 import java.io.Serializable;
+import java.time.LocalDate;
 import java.util.Date;
 import java.util.UUID;
 
@@ -24,10 +25,10 @@ public class LoanModel implements Serializable {
     private StudentModel student;
 
     @Column(nullable = false)
-    private Date date;
+    private LocalDate date;
 
     @Column(nullable = false)
-    private Date due_date;
+    private LocalDate due_date;
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
@@ -56,19 +57,19 @@ public class LoanModel implements Serializable {
         this.student = student;
     }
 
-    public Date getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(Date date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
-    public Date getDue_date() {
+    public LocalDate getDue_date() {
         return due_date;
     }
 
-    public void setDue_date(Date due_date) {
+    public void setDue_date(LocalDate due_date) {
         this.due_date = due_date;
     }
 
