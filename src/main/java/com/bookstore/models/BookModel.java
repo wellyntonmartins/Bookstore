@@ -40,4 +40,7 @@ public class BookModel implements Serializable {
 
     @Column(nullable = false)
     private int available_quantity = 0;
+
+    @Column(nullable = false, unique = true)
+    private String isbn;
 }

@@ -62,7 +62,7 @@ public class BookService {
     @Transactional
     public BookModel saveBook(BookRecordDto bookRecordDto) {
         // Validation for empty or null data
-        if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty()) {
+        if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty() || !StringUtils.hasText(bookRecordDto.isbn())) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
 
@@ -93,12 +93,17 @@ public class BookService {
             throw new DataFormatWrongException("To add a book, you need to inform the available quantity on library.");
         }
 
+        if (!bookRecordDto.isbn().matches("^(97[89])[- ]\\d{1,5}[- ]\\d{1,7}[- ]\\d{1,7}[- ]\\d$")) {
+            throw new DataFormatWrongException("Incorrect ISBN format. The format must be 'XXX-XX-XXX-XXXX-X'");
+        }
+
         // Instantiation
         BookModel newBook = new BookModel();
         newBook.setTitle(bookRecordDto.title());
         newBook.setPublisher(publisher);
         newBook.setAuthors(new HashSet<>(authors));
         newBook.setAvailable_quantity(bookRecordDto.available_quantity());
+        newBook.setIsbn(bookRecordDto.isbn());
 
         if (StringUtils.hasText(bookRecordDto.reviewComment())) {
             ReviewModel reviewModel = new ReviewModel();
@@ -112,7 +117,7 @@ public class BookService {
 
     @Transactional
     public BookModel updateBook(UUID bookId, BookRecordDto bookRecordDto) {
-        if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty()) {
+        if (!StringUtils.hasText(bookRecordDto.title()) || bookRecordDto.authorsIds().isEmpty() || !StringUtils.hasText(bookRecordDto.isbn())) {
             throw new DataFormatWrongException("Data cannot be empty. Please verify the request content.");
         }
 
@@ -145,10 +150,15 @@ public class BookService {
             throw new DataFormatWrongException("To update an book, you need to inform the available quantity on library.");
         }
 
+        if (bookRecordDto.isbn().matches("^(97[89])[- ]\\d{1,5}[- ]\\d{1,7}[- ]\\d{1,7}[- ]\\d$")) {
+            throw new DataFormatWrongException("Incorrect ISBN format. The format must be 'XXX-XX-XXX-XXXX-X'");
+        }
+
         bookToUpdate.setTitle(bookRecordDto.title());
         bookToUpdate.setPublisher(publisher);
         bookToUpdate.setAuthors(new HashSet<>(authors));
         bookToUpdate.setAvailable_quantity(bookRecordDto.available_quantity());
+        bookToUpdate.setIsbn(bookRecordDto.isbn());
 
         if (StringUtils.hasText(bookRecordDto.reviewComment())) {
             ReviewModel bookAtualReview = bookToUpdate.getReview();
