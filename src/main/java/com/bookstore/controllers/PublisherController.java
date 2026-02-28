@@ -5,6 +5,7 @@ import com.bookstore.models.PublisherModel;
 import com.bookstore.services.PublisherService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,6 +21,7 @@ public class PublisherController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<List<PublisherModel>> getAllPublishers(@RequestParam(required = false) String name) {
         if (name != null) {
             return ResponseEntity.ok(publisherService.getAllPublishersByContainingName(name));
@@ -28,25 +30,22 @@ public class PublisherController {
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<PublisherModel> getPublisherByID(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(publisherService.getPublisherById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<PublisherModel> save(@RequestBody PublisherRecordDto publisherRecordDto) {
         PublisherModel response = publisherService.savePublisher(publisherRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<PublisherModel> update(@PathVariable UUID id, @RequestBody PublisherRecordDto publisherRecordDto) {
         PublisherModel response = publisherService.updatePublisher(id, publisherRecordDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
     }
-
-//    @DeleteMapping("/{id}")
-//    public ResponseEntity<String> delete(@PathVariable UUID id) {
-//        publisherService.deletePublisher(id);
-//        return ResponseEntity.status(HttpStatus.OK).body("Publisher with id '" + id + "' deleted successfully. \n NOTE: All books of this publisher were ");
-//    }
 }

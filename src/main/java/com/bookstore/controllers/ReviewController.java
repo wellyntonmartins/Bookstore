@@ -5,6 +5,7 @@ import com.bookstore.models.ReviewModel;
 import com.bookstore.services.ReviewService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +21,26 @@ public class ReviewController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN')")
     public ResponseEntity<List<ReviewModel>> getAllReviews() {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getAllReviews());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<ReviewModel> getReviewById(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(reviewService.getReviewById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<ReviewModel> save(@RequestParam(required = true) UUID bookId, @RequestBody ReviewRecordDto reviewRecordDto) {
         ReviewModel response = reviewService.saveReview(bookId, reviewRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<ReviewModel> update(@PathVariable UUID id, @RequestBody ReviewRecordDto reviewRecordDto) {
         ReviewModel response = reviewService.updateReview(id, reviewRecordDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);

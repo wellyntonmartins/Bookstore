@@ -1,13 +1,11 @@
 package com.bookstore.models;
 
+import com.bookstore.dtos.AuthRecordDto;
 import jakarta.persistence.*;
 import lombok.*;
-import org.springframework.security.core.GrantedAuthority;
-import org.springframework.security.core.userdetails.UserDetails;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 import java.io.Serializable;
-import java.util.Collection;
-import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 
@@ -18,7 +16,7 @@ import java.util.UUID;
 @ToString(exclude = "password")
 @Entity
 @Table(name = "TB_USER")
-public class UserModel implements UserDetails, Serializable {
+public class UserModel implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -41,33 +39,7 @@ public class UserModel implements UserDetails, Serializable {
     )
     private Set<RoleModel> roleModels;
 
-    @Override
-    public Collection<? extends GrantedAuthority> getAuthorities() {
-        return List.of();
-    }
-
-    @Override
-    public String getUsername() {
-        return email;
-    }
-
-    @Override
-    public boolean isAccountNonExpired() {
-        return UserDetails.super.isAccountNonExpired();
-    }
-
-    @Override
-    public boolean isAccountNonLocked() {
-        return UserDetails.super.isAccountNonLocked();
-    }
-
-    @Override
-    public boolean isCredentialsNonExpired() {
-        return UserDetails.super.isCredentialsNonExpired();
-    }
-
-    @Override
-    public boolean isEnabled() {
-        return UserDetails.super.isEnabled();
-    }
+   public boolean isLoginCorrect(AuthRecordDto authRecordDto, PasswordEncoder passwordEncoder) {
+       return passwordEncoder.matches(authRecordDto.password(), this.password);
+   }
 }

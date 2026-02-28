@@ -5,6 +5,7 @@ import com.bookstore.models.StudentModel;
 import com.bookstore.services.StudentService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -20,22 +21,26 @@ public class StudentController {
     }
 
     @GetMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<List<StudentModel>> getAllStudents() {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.getAllStudents());
     }
 
     @GetMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<StudentModel> getStudentById(@PathVariable UUID id) {
         return ResponseEntity.status(HttpStatus.OK).body(studentService.getStudentById(id));
     }
 
     @PostMapping
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<StudentModel> save(@RequestBody StudentRecordDto studentRecordDto) {
         StudentModel response = studentService.saveStudent(studentRecordDto);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
     }
 
     @PutMapping("/{id}")
+    @PreAuthorize("hasAnyAuthority('SCOPE_ADMIN', 'SCOPE_LIBRARIAN')")
     public ResponseEntity<StudentModel> update(@PathVariable UUID id, @RequestBody StudentRecordDto studentRecordDto) {
         StudentModel response = studentService.updateStudent(id, studentRecordDto);
         return ResponseEntity.status(HttpStatus.OK).body(response);
