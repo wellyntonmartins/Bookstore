@@ -35,7 +35,7 @@ public class BookService {
     }
 
     public BookModel getBookById(UUID id) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new DataFormatWrongException("The provided UUID can't be empty or null.");
         }
 

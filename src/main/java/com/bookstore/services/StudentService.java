@@ -29,7 +29,7 @@ public class StudentService {
     }
 
     public StudentModel getStudentById(UUID id) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new DataFormatWrongException("The provided UUID can't be empty or null.");
         }
 

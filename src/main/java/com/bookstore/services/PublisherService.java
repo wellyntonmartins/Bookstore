@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.util.StringUtils;
 
 import java.util.List;
+import java.util.Objects;
 import java.util.Optional;
 import java.util.UUID;
 
@@ -41,7 +42,7 @@ public class PublisherService {
     }
 
     public PublisherModel getPublisherById(UUID id) {
-        if (id == null) {
+        if (Objects.isNull(id)) {
             throw new DataFormatWrongException("The provided UUID can't be empty or null.");
         }
 

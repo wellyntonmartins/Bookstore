@@ -2,6 +2,7 @@ package com.bookstore.repositories;
 
 import com.bookstore.models.AuthorModel;
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import java.util.Optional;
@@ -9,6 +10,7 @@ import java.util.UUID;
 
 // Cria um Repository extendendo o JpaRepo e passa pra ele de qual entidade e esse repositorio e qualo tipo da PK dela
 // Resumindo "essa interface e de AuthorModel, que tem sua primary key com o tipo UUID"
+@Repository
 public interface AuthorRepository extends JpaRepository<AuthorModel, UUID> {
     Optional<AuthorModel> findAuthorModelByName(String name);
     List<AuthorModel> findAuthorModelsByNameContainingIgnoreCase(String name);

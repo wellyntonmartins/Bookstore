@@ -1,12 +1,10 @@
 package com.bookstore.repositories;
 
-import com.bookstore.models.LoanModel;
+import com.bookstore.models.RoleModel;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.UUID;
-
 @Repository
-public interface LoanRepository extends JpaRepository<LoanModel, UUID> {
+public interface RoleRepository extends JpaRepository<RoleModel, Long> {
 
 }

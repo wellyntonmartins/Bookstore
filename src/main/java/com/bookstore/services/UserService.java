@@ -1,16 +1,8 @@
 package com.bookstore.services;
 
-import com.bookstore.repositories.UserRepository;
-import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.stereotype.Service;
 
+@Service
 public class UserService {
-    private final UserRepository repository;
-    private final PasswordEncoder passwordEncoder;
-
-    public UserService(UserRepository repository, PasswordEncoder passwordEncoder) {
-        this.repository = repository;
-        this.passwordEncoder = passwordEncoder;
-    }
-
 
 }
